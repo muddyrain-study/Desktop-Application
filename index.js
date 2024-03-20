@@ -4,8 +4,12 @@ const { app, BrowserWindow } = require("electron");
 // 创建窗口的方法
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 960,
+    height: 400,
+    webPreferences:{
+      nodeIntegration: true, // 开启node集成
+      contextIsolation: false, // 关闭上下文隔离
+    }
   });
   win.loadFile("index.html");
 };
