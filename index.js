@@ -6,10 +6,11 @@ const createWindow = () => {
   const win = new BrowserWindow({
     width: 960,
     height: 400,
-    webPreferences:{
+    webPreferences: {
       nodeIntegration: true, // 开启node集成
       contextIsolation: false, // 关闭上下文隔离
-    }
+      webviewTag: true, // 允许使用 <webview> 标签
+    },
   });
   win.loadFile("index.html");
 };
