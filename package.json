@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "29.1.2"
+    "@types/node": "^20.12.12",
+    "electron": "29.1.2",
+    "prettier": "^3.2.5"
   },
   "dependencies": {
     "electron": "^29.1.2"

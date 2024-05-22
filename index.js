@@ -1,5 +1,5 @@
 // index.js
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 
 // 创建窗口的方法
 const createWindow = () => {
@@ -12,8 +12,16 @@ const createWindow = () => {
       webviewTag: true, // 允许使用 <webview> 标签
     },
   });
-  win.loadFile("index.html");
+  win.loadFile("./window/window.html");
 };
+
+ipcMain.on("message", (event, arg) => {
+  try {
+    event.sender.send("reply", "主进程已经接收到数据");
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 // whenReady是一个生命周期方法，会在 Electron 完成应用初始化后调用
 // 返回一个 promise
