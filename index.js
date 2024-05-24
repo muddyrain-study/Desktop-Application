@@ -2,13 +2,18 @@
 const { app, BrowserWindow, ipcMain, MessageChannelMain } = require("electron");
 const url = require("url");
 const path = require("path");
-const winRef = [];
-
+let parentWin = null;
+let childWin = null;
 // 创建窗口的方法
-const createWindow = (url) => {
+const createWindow = (url, options) => {
   const win = new BrowserWindow({
     width: 1400,
     height: 800,
+    maxWidth: 1800,
+    maxHeight: 1000,
+    minWidth: 1000,
+    minHeight: 600,
+    parent: options && options.parent,
     webPreferences: {
       nodeIntegration: true, // 开启node集成
       contextIsolation: false, // 关闭上下文隔离
@@ -20,34 +25,29 @@ const createWindow = (url) => {
   return win;
 };
 
-ipcMain.on("request-port", (event) => {
-  const { port1, port2 } = new MessageChannelMain();
-  event.sender.postMessage("deliver-port", null, [port2]);
-  port1.on("message", (event) => {
-    if (event.data === "start") {
-      // 开始复杂的数据处理，并返回
-      handleData(port1);
-    }
-  });
-  port1.start();
-});
-const handleData = (port) => {
-  const interval = setInterval(() => {
-    const data = Math.random().toFixed(2);
-    port.postMessage(data);
-  }, 1000);
-
-  port.on("close", () => {
-    clearInterval(interval);
-    port.close();
-  });
-};
-
 app.whenReady().then(() => {
   const url1 = url.format({
     protocol: "file",
     slashes: true,
     pathname: path.join(__dirname, "window", "" + "index.html"),
   });
-  winRef.push(createWindow(url1));
+  const url2 = url.format({
+    protocol: "file",
+    slashes: true,
+    pathname: path.join(__dirname, "window2", "" + "index.html"),
+  });
+  parentWin = createWindow(url1);
+  childWin = createWindow(url2, {
+    parent: parentWin,
+  });
+
+  let { x, y, width, height } = parentWin.getBounds();
+  console.log(x, y, width, height);
+  const childWinX = x + width / 2 + 10;
+  const childWinY = y + height / 2 + 10;
+  childWin.setBounds({
+    x: childWinX,
+    y: childWinY,
+  });
+  parentWin.setAlwaysOnTop(true, "pop-up-menu");
 });
