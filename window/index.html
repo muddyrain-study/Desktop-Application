@@ -7,10 +7,15 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
     />
-    <title>窗口</title>
+    <link rel="stylesheet" href="./index.css">
+    <title>时钟</title>
   </head>
   <body>
-    <h1>Electron</h1>
+    <div id="clock" class="clock">
+      <div class="hour"></div>
+      <div class="min"></div>
+      <div class="sec"></div>
+    </div>
     <script src="./index.js"></script>
   </body>
 </html>

@@ -1,29 +1,31 @@
-// index.js
 const { app, BrowserWindow, ipcMain, MessageChannelMain } = require("electron");
 const url = require("url");
 const path = require("path");
-let parentWin = null;
-let childWin = null;
-// 创建窗口的方法
+
 const createWindow = (url, options) => {
   const win = new BrowserWindow({
-    width: 1400,
-    height: 800,
-    maxWidth: 1800,
-    maxHeight: 1000,
-    minWidth: 1000,
-    minHeight: 600,
-    parent: options && options.parent,
+    width: 350,
+    height: 350,
+    transparent: true,
+    resizable: false,
+    frame: false,
     webPreferences: {
       nodeIntegration: true, // 开启node集成
       contextIsolation: false, // 关闭上下文隔离
       webviewTag: true, // 允许使用 <webview> 标签
     },
   });
-  // win.loadFile("./window/index.html");
   win.loadURL(url);
+  win.setAlwaysOnTop(true, "pop-up-menu");
+  // 设置窗口忽略鼠标事件
+  // win.setIgnoreMouseEvents(true);
   return win;
 };
+
+ipcMain.on("setIgnoreMouseEvent", (event, ...arg) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  BrowserWindow.fromWebContents(event.sender).setIgnoreMouseEvents(...arg);
+});
 
 app.whenReady().then(() => {
   const url1 = url.format({
@@ -31,23 +33,5 @@ app.whenReady().then(() => {
     slashes: true,
     pathname: path.join(__dirname, "window", "" + "index.html"),
   });
-  const url2 = url.format({
-    protocol: "file",
-    slashes: true,
-    pathname: path.join(__dirname, "window2", "" + "index.html"),
-  });
-  parentWin = createWindow(url1);
-  childWin = createWindow(url2, {
-    parent: parentWin,
-  });
-
-  let { x, y, width, height } = parentWin.getBounds();
-  console.log(x, y, width, height);
-  const childWinX = x + width / 2 + 10;
-  const childWinY = y + height / 2 + 10;
-  childWin.setBounds({
-    x: childWinX,
-    y: childWinY,
-  });
-  parentWin.setAlwaysOnTop(true, "pop-up-menu");
+  createWindow(url1);
 });
