@@ -1,20 +1,14 @@
-require("./shortcut");
-const {
-  app,
-  BrowserWindow,
-  ipcMain,
-  MessageChannelMain,
-  Menu,
-  Tray,
-} = require("electron");
+const { app, BrowserWindow, Tray } = require("electron");
 const url = require("url");
 const path = require("path");
 const winMap = new Map();
-let tray = null;
 const createWindow = (url, options) => {
   const win = new BrowserWindow({
-    width: 1200,
-    height: 700,
+    width: 340,
+    height: 460,
+    frame: false,
+    resizable: false,
+    show: false,
     webPreferences: {
       nodeIntegration: true, // 开启node集成
       contextIsolation: false, // 关闭上下文隔离
@@ -27,34 +21,13 @@ const createWindow = (url, options) => {
   return win;
 };
 const createTray = () => {
-  tray = new Tray(path.join(__dirname, "./assets/tray.png"));
-
+  const tray = new Tray(path.join(__dirname, "./assets/tray.png"));
   tray.on("click", () => {
-    const win = winMap.get("win1");
-    if (win) {
-      win.isVisible() ? win.hide() : win.show();
-    }
+    const trayBound = tray.getBounds();
+    const win1 = winMap.get("win1");
+    win1.setPosition(trayBound.x - 170, trayBound.y - 460);
+    win1.isVisible() ? win1.hide() : win1.show();
   });
-
-  // 还可以设置菜单
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: "显示/隐藏",
-      click: () => {
-        const win = winMap.get("win1");
-        if (win) {
-          win.isVisible() ? win.hide() : win.show();
-        }
-      },
-    },
-    {
-      label: "退出",
-      click: () => {
-        app.quit();
-      },
-    },
-  ]);
-  tray.setContextMenu(contextMenu);
 };
 app.whenReady().then(() => {
   const url1 = url.format({
@@ -64,7 +37,6 @@ app.whenReady().then(() => {
   });
   createWindow(url1, {
     id: "win1",
-    show: true,
   });
   createTray();
 });
