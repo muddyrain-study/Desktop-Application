@@ -8,7 +8,6 @@ const createWindow = (url, options) => {
     height: 460,
     frame: false,
     resizable: false,
-    show: false,
     webPreferences: {
       nodeIntegration: true, // 开启node集成
       contextIsolation: false, // 关闭上下文隔离
@@ -20,15 +19,7 @@ const createWindow = (url, options) => {
   winMap.set(options.id, win);
   return win;
 };
-const createTray = () => {
-  const tray = new Tray(path.join(__dirname, "./assets/tray.png"));
-  tray.on("click", () => {
-    const trayBound = tray.getBounds();
-    const win1 = winMap.get("win1");
-    win1.setPosition(trayBound.x - 170, trayBound.y - 460);
-    win1.isVisible() ? win1.hide() : win1.show();
-  });
-};
+
 app.whenReady().then(() => {
   const url1 = url.format({
     protocol: "file",
@@ -38,5 +29,4 @@ app.whenReady().then(() => {
   createWindow(url1, {
     id: "win1",
   });
-  createTray();
 });
