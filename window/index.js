@@ -10,3 +10,11 @@ btn.addEventListener("click", async () => {
   });
   console.log(result);
 });
+
+const menu = document.getElementById("menu");
+window.addEventListener("contextmenu", (e) => {
+  e.preventDefault();
+  menu.style.left = e.clientX + "px";
+  menu.style.top = e.clientY + "px";
+  menu.style.display = "block";
+});

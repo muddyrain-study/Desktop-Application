@@ -2,7 +2,7 @@ const { app, BrowserWindow, Tray, ipcMain, dialog } = require("electron");
 const url = require("url");
 const path = require("path");
 const winMap = new Map();
-
+require("./menu");
 ipcMain.handle("show-message-box", async (event, options) => {
   const currentWindow = BrowserWindow.getFocusedWindow();
 
