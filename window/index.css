@@ -1,21 +1,48 @@
-/* 右键菜单 */
-#menu {
-    width: 125px;
-    overflow: hidden;
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #ccc;
-    position: absolute;
-    display: none;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    text-align: center;
+    padding: 20px;
 }
 
-.menu {
-    height: 36px;
-    line-height: 36px;
-    text-align: center;
-    border-bottom: 1px solid #ccc;
-    background-color: #fff;
-    cursor: pointer;
+.container {
+    background-color: white;
+    width: 60%;
+    margin: 30px auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.menu:hover {
-    background-color: #ccc;
+
+.upload-section {
+    margin: 20px 0;
+}
+
+#file-input {
+    margin-right: 10px;
+}
+
+#upload-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#progress-bar-container {
+    width: 100%;
+    background-color: #ddd;
+}
+
+#progress-bar {
+    width: 0%;
+    height: 20px;
+    background-color: #4caf50;
 }

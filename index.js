@@ -2,26 +2,11 @@ const { app, BrowserWindow, Tray, ipcMain, dialog } = require("electron");
 const url = require("url");
 const path = require("path");
 const winMap = new Map();
-require("./menu");
-ipcMain.handle("show-message-box", async (event, options) => {
-  const currentWindow = BrowserWindow.getFocusedWindow();
-
-  return dialog.showOpenDialog(currentWindow, {
-    title: "我要打开文件",
-    buttonLabel: "确定",
-    defaultPath: app.getPath("pictures"),
-    properties: ["openFile", "multiSelections"],
-    filters: [
-      { name: "Images", extensions: ["jpg", "png", "gif"] },
-      { name: "Movies", extensions: ["mkv", "avi", "mp4"] },
-    ],
-  });
-});
-
+const electronReload = require("electron-reload");
 const createWindow = (url, options) => {
   const win = new BrowserWindow({
-    width: 340,
-    height: 460,
+    width: 1400,
+    height: 640,
     webPreferences: {
       nodeIntegration: true, // 开启node集成
       contextIsolation: false, // 关闭上下文隔离
@@ -31,6 +16,7 @@ const createWindow = (url, options) => {
   });
   win.loadURL(url);
   winMap.set(options.id, win);
+  win.webContents.openDevTools();
   return win;
 };
 
@@ -44,3 +30,10 @@ app.whenReady().then(() => {
     id: "win1",
   });
 });
+
+ipcMain.on("progress", (e, percent) => {
+  const win1 = winMap.get("win1");
+  win1.setProgressBar(percent);
+});
+
+electronReload(__dirname);
