@@ -3,6 +3,15 @@ const url = require("url");
 const path = require("path");
 const winMap = new Map();
 const electronReload = require("electron-reload");
+const fs = require("fs");
+const Store = require("electron-store");
+const store = new Store({
+  name: "my-first-electron-store-data",
+});
+store.set("name", "electron-store");
+console.log(store.get("name"));
+store.set("foo.bar", "foo-bar");
+console.log(app.getPath("userData"));
 const createWindow = (url, options) => {
   const win = new BrowserWindow({
     width: 1400,
@@ -31,9 +40,18 @@ app.whenReady().then(() => {
   });
 });
 
-ipcMain.on("progress", (e, percent) => {
-  const win1 = winMap.get("win1");
-  win1.setProgressBar(percent);
+ipcMain.on(
+  "save-to-desktop",
+  (event, content, dir = app.getPath("desktop")) => {
+    fs.writeFileSync(path.join(dir, "my-test-file.txt"), content);
+  },
+);
+
+ipcMain.handle("select-dir", async (event) => {
+  const result = await dialog.showOpenDialog({
+    properties: ["openDirectory"],
+  });
+  return result.filePaths[0];
 });
 
 electronReload(__dirname);
