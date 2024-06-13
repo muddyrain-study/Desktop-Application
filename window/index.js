@@ -1,22 +1,18 @@
 const { ipcRenderer } = require("electron");
-const saveBtn = document.getElementById("save");
-const selectAndSave = document.getElementById("selectAndSave");
-const content = document.getElementById("content");
-saveBtn.addEventListener("click", () => {
-  if (content.value) {
-    ipcRenderer.send("save-to-desktop", content.value);
-    alert("保存成功");
-  } else {
-    alert("内容不能为空");
-  }
+const themeColor = document.querySelector("#themeColor");
+const fontSize = document.querySelector("#fontSize");
+const saveButton = document.querySelector("#saveButton");
+const loadButton = document.querySelector("#loadButton");
+const textInput = document.querySelector("#textInput");
+
+saveButton.addEventListener("click", () => {
+  localStorage.setItem("themeColor", themeColor.value);
+  localStorage.setItem("fontSize", fontSize.value);
 });
 
-selectAndSave.addEventListener("click", () => {
-  // 拿到用户选择的文件路径
-  ipcRenderer.invoke("select-dir").then((dir) => {
-    if (dir) {
-      ipcRenderer.send("save-to-desktop", content.value, dir);
-      alert("保存成功");
-    }
-  });
+loadButton.addEventListener("click", () => {
+  themeColor.value = localStorage.getItem("themeColor");
+  fontSize.value = localStorage.getItem("fontSize");
+  textInput.style.color = themeColor.value;
+  textInput.style.fontSize = fontSize.value + "px";
 });

@@ -38,20 +38,14 @@ app.whenReady().then(() => {
   createWindow(url1, {
     id: "win1",
   });
-});
-
-ipcMain.on(
-  "save-to-desktop",
-  (event, content, dir = app.getPath("desktop")) => {
-    fs.writeFileSync(path.join(dir, "my-test-file.txt"), content);
-  },
-);
-
-ipcMain.handle("select-dir", async (event) => {
-  const result = await dialog.showOpenDialog({
-    properties: ["openDirectory"],
+  const url2 = url.format({
+    protocol: "file",
+    slashes: true,
+    pathname: path.join(__dirname, "window", "" + "index2.html"),
   });
-  return result.filePaths[0];
+  createWindow(url2, {
+    id: "win2",
+  });
 });
 
 electronReload(__dirname);
