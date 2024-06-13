@@ -38,14 +38,6 @@ app.whenReady().then(() => {
   createWindow(url1, {
     id: "win1",
   });
-  const url2 = url.format({
-    protocol: "file",
-    slashes: true,
-    pathname: path.join(__dirname, "window", "" + "index2.html"),
-  });
-  createWindow(url2, {
-    id: "win2",
-  });
 });
 
 electronReload(__dirname);

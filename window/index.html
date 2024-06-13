@@ -11,20 +11,20 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <h1>Electron Demo</h1>
-    <div>
-      <label for="">主题颜色</label>
-      <input type="color" id="themeColor" />
-    </div>
-    <div>
-      <label for="fontSize">字体大小</label>
-      <input type="range" id="fontSize" min="12" max="36" />
-    </div>
-    <button id="saveButton">存储用户偏好</button>
-    <button id="loadButton">加载用户偏好</button>
-    <div>
-      <h2>用户偏好测试</h2>
-      <textarea name="" id="textInput" cols="50" rows="10" placeholder="请输入测试文本"></textarea>
+    <h1>待办事项</h1>
+    <input
+      type="text"
+      name="todoInput"
+      id="todoInput"
+      placeholder="请输入新的任务..."
+    />
+    <button id="addTodoBtn">添加任务</button>
+    <ul id="todoList"></ul>
+    <!-- 更新某一个待办事项，一开始不显示，只有用户点击更新的时候，这部分内容才显示 -->
+    <div id="customPrompt">
+      <input type="text" name="customPromptInput" id="customPromptInput" />
+      <button id="customPromptOk">确认修改</button>
+      <button id="customPromptCancel">取消修改</button>
     </div>
     <script src="index.js"></script>
   </body>
