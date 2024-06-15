@@ -1,28 +1,24 @@
 const { app, BrowserWindow, Tray, ipcMain, dialog } = require("electron");
+const remoteMain = require("@electron/remote/main");
+// 要做一个初始化操作
+remoteMain.initialize();
+
 const url = require("url");
 const path = require("path");
 const winMap = new Map();
-const electronReload = require("electron-reload");
-const fs = require("fs");
-const Store = require("electron-store");
-const store = new Store({
-  name: "my-first-electron-store-data",
-});
-store.set("name", "electron-store");
-console.log(store.get("name"));
-store.set("foo.bar", "foo-bar");
-console.log(app.getPath("userData"));
+
 const createWindow = (url, options) => {
   const win = new BrowserWindow({
     width: 1400,
     height: 640,
     webPreferences: {
       nodeIntegration: true, // 开启node集成
-      contextIsolation: false, // 关闭上下文隔离
-      webviewTag: true, // 允许使用 <webview> 标签
+      // contextIsolation: true, // 开启上下文隔离
+      preload: path.join(__dirname, "preload.js"),
     },
     ...options,
   });
+
   win.loadURL(url);
   winMap.set(options.id, win);
   win.webContents.openDevTools();
@@ -39,5 +35,3 @@ app.whenReady().then(() => {
     id: "win1",
   });
 });
-
-electronReload(__dirname);
