@@ -1,7 +1,4 @@
 const { app, BrowserWindow, Tray, ipcMain, dialog } = require("electron");
-const remoteMain = require("@electron/remote/main");
-// 要做一个初始化操作
-remoteMain.initialize();
 
 const url = require("url");
 const path = require("path");
@@ -13,8 +10,7 @@ const createWindow = (url, options) => {
     height: 640,
     webPreferences: {
       nodeIntegration: true, // 开启node集成
-      // contextIsolation: true, // 开启上下文隔离
-      preload: path.join(__dirname, "preload.js"),
+      contextIsolation: false, // 开启上下文隔离
     },
     ...options,
   });
