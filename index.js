@@ -1,33 +1,23 @@
-const { app, BrowserWindow, Tray, ipcMain, dialog } = require("electron");
+const tokenize = require("./tokenize");
+const parse = require("./parse");
+const markdownText = `
+## 标题
+这是一个段落。
 
-const url = require("url");
-const path = require("path");
-const winMap = new Map();
+- 列表项 1
+- 列表项 2
 
-const createWindow = (url, options) => {
-  const win = new BrowserWindow({
-    width: 1400,
-    height: 640,
-    webPreferences: {
-      nodeIntegration: true, // 开启node集成
-      contextIsolation: false, // 开启上下文隔离
-    },
-    ...options,
-  });
+这是第二个段落。
 
-  win.loadURL(url);
-  winMap.set(options.id, win);
-  win.webContents.openDevTools();
-  return win;
-};
+1. 西瓜
+2. 哈密瓜
+`;
 
-app.whenReady().then(() => {
-  const url1 = url.format({
-    protocol: "file",
-    slashes: true,
-    pathname: path.join(__dirname, "window", "" + "index.html"),
-  });
-  createWindow(url1, {
-    id: "win1",
-  });
-});
+function markdownToHtml(markdownToHtml) {
+  // 1. 分词 解析为 tokens
+  const tokens = tokenize(markdownText);
+  // 2. 解析 tokens 为 ast
+  const ast = parse(tokens);
+  console.log(ast);
+}
+markdownToHtml(markdownText);

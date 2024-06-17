@@ -16,7 +16,6 @@ const markdownText = `
 function tokenize(markdownText) {
   // 1. 将 markdownText 按行分割
   const lines = markdownText.split("\n");
-  console.log(lines);
   // 2. 用于存储解析的结果
   const tokens = [];
 
@@ -57,4 +56,5 @@ function tokenize(markdownText) {
   }
   return tokens;
 }
-console.log(tokenize(markdownText));
+
+module.exports = tokenize;
