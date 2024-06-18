@@ -1,5 +1,6 @@
 const tokenize = require("./tokenize");
 const parse = require("./parse");
+const generateHTML = require("./generateHTML");
 const markdownText = `
 ## 标题
 这是一个段落。
@@ -18,6 +19,8 @@ function markdownToHtml(markdownToHtml) {
   const tokens = tokenize(markdownText);
   // 2. 解析 tokens 为 ast
   const ast = parse(tokens);
-  console.log(ast);
+  // 3. 将 ast 转换为 html
+  const html = generateHTML(ast);
+  console.log(html);
 }
 markdownToHtml(markdownText);
