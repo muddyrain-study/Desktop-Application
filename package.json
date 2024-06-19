@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec electron . --watch ./ --ext .js"
+    "dev": "nodemon --exec electron . --watch ./ --ext .js",
+    "start": "electron ."
   },
   "keywords": [],
   "author": "",
@@ -17,7 +18,8 @@
     "electron-reload": "2.0.0-alpha.1",
     "electron-store": "^5.2.0",
     "nodemon": "^3.1.1",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "simplemde": "^1.11.2"
   },
   "dependencies": {
     "electron": "^29.1.2"
