@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec electron . --watch ./ --ext .js",
-    "start": "electron ."
+    "dev": "set NODE_ENV=development&&nodemon --exec electron . --watch ./ --ext js",
+    "start": "set NODE_ENV=production&& electron ."
   },
   "keywords": [],
   "author": "",

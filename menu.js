@@ -68,7 +68,34 @@ const menuArr = [
     ],
   },
 ];
+// 根据当前的环境，是否添加开发者工具
+if (process.env.NODE_ENV === "development") {
+  console.log("开发环境");
+  menuArr.push({
+    label: "开发者工具",
+    submenu: [
+      {
+        label: "打开开发者工具",
+        accelerator: "CmdOrCtrl+Shift+I",
+        click(item, win) {
+          win.webContents.openDevTools();
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
+        label: "重新加载",
+        role: "reload",
+        accelerator: "CmdOrCtrl+R",
+      },
+    ],
+  });
+}
 
+menuArr.unshift({
+  label: process.platform,
+});
 const menu = Menu.buildFromTemplate(menuArr);
 
 Menu.setApplicationMenu(menu);
