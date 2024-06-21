@@ -1,4 +1,31 @@
-const { Menu } = require("electron");
+const { Menu, BrowserWindow, dialog, app } = require("electron");
+const fs = require("fs");
+
+function loadFile() {
+  const window = BrowserWindow.getFocusedWindow();
+  const files = dialog.showOpenDialogSync(window, {
+    properties: ["openFile"],
+    title: "请选择要打开的文件",
+    defaultPath: app.getPath("documents"),
+    filters: [{ name: "Markdown", extensions: ["md", "txt"] }],
+  });
+  const file = files[0];
+  const fileContent = fs.readFileSync(file, "utf-8").toString();
+  window.webContents.send("load", fileContent);
+}
+
+async function saveFile() {
+  const window = BrowserWindow.getFocusedWindow();
+  const content = await window.webContents.executeJavaScript("editor.value();");
+  const filePath = dialog.showSaveDialogSync(window, {
+    title: "保存文件",
+    defaultPath: app.getPath("documents"),
+    filters: [{ name: "Markdown", extensions: ["md", "txt"] }],
+  });
+  if (filePath) {
+    fs.writeFileSync(filePath, content, "utf-8");
+  }
+}
 
 const menuArr = [
   {
@@ -6,14 +33,16 @@ const menuArr = [
     submenu: [
       {
         label: "打开",
+        accelerator: "CmdOrCtrl+O",
         click() {
-          console.log("打开文件");
+          loadFile();
         },
       },
       {
         label: "保存",
+        accelerator: "CmdOrCtrl+S",
         click() {
-          console.log("保存文件");
+          saveFile();
         },
       },
     ],
@@ -70,7 +99,6 @@ const menuArr = [
 ];
 // 根据当前的环境，是否添加开发者工具
 if (process.env.NODE_ENV === "development") {
-  console.log("开发环境");
   menuArr.push({
     label: "开发者工具",
     submenu: [
@@ -97,5 +125,4 @@ menuArr.unshift({
   label: process.platform,
 });
 const menu = Menu.buildFromTemplate(menuArr);
-
 Menu.setApplicationMenu(menu);
